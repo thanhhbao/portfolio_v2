@@ -148,36 +148,45 @@ export default function Portfolio() {
 
   // Particle component
   const Particles = () => {
-    return (
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(50)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              opacity: 0,
-            }}
-            animate={{
-              y: [null, -100, -200],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 2,
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
-    )
-  }
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
+  useEffect(() => {
+    // Chỉ chạy trên client
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(50)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-cyan-400 rounded-full"
+          initial={{
+            x: Math.random() * dimensions.width, // Sử dụng state thay vì window
+            y: Math.random() * dimensions.height, // Sử dụng state thay vì window
+            opacity: 0,
+          }}
+          animate={{
+            y: [null, -100, -200],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 3 + 2,
+            repeat: Number.POSITIVE_INFINITY,
+            delay: Math.random() * 2,
+          }}
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
   return (
     <div className="min-h-screen bg-[#1a1b27] text-white font-mono overflow-x-hidden">
       {/* Custom Cursor */}
